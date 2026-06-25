@@ -1,31 +1,31 @@
-const BASE_URL = import.meta.env.VITE_API_URL || 'https://backend-1-eevt.onrender.com'
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
 const API_URL = `${BASE_URL}/api/auth`
 
 const DEMO_USERS = {
-  'admin@demo.cl': {
-    token: 'demo-admin-token',
+  'admin1@demo.cl': {
+    token: 'demo-admin1-token',
     user: {
       id: 1,
-      full_name: 'Demo Admin',
-      email: 'admin@demo.cl',
+      full_name: 'Demo Admin 1',
+      email: 'admin1@demo.cl',
       role: 'admin',
     },
   },
-  'coach@demo.cl': {
-    token: 'demo-coach-token',
+  'coach1@demo.cl': {
+    token: 'demo-coach1-token',
     user: {
       id: 2,
-      full_name: 'Demo Coach',
-      email: 'coach@demo.cl',
+      full_name: 'Demo Coach 1',
+      email: 'coach1@demo.cl',
       role: 'coach',
     },
   },
-  'user@demo.cl': {
-    token: 'demo-user-token',
+  'user1@demo.cl': {
+    token: 'demo-user1-token',
     user: {
       id: 3,
-      full_name: 'Demo Usuario',
-      email: 'user@demo.cl',
+      full_name: 'Demo User 1',
+      email: 'user1@demo.cl',
       role: 'user',
     },
   },
