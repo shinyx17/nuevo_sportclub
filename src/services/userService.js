@@ -7,10 +7,16 @@ function getToken() {
 }
 
 function getHeaders() {
-  return {
+  const headers = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${getToken()}`,
   }
+
+  const token = getToken()
+  if (token) {
+    headers.Authorization = `Bearer ${token}`
+  }
+
+  return headers
 }
 
 function readOfflineUsers() {

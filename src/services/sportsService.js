@@ -4,10 +4,16 @@ const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
 const API_URL = `${BASE_URL}/api/sports`
 
 function getHeaders() {
-  return {
+  const headers = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${getToken()}`,
   }
+
+  const token = getToken()
+  if (token) {
+    headers.Authorization = `Bearer ${token}`
+  }
+
+  return headers
 }
 
 function isNetworkError(error) {

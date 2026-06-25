@@ -173,13 +173,22 @@ export async function registerUser(registrationData) {
 }
 
 export function getToken() {
-  return localStorage.getItem('token')
+  const token = localStorage.getItem('token')
+
+  if (!token || token === 'undefined' || token === 'null') {
+    localStorage.removeItem('token')
+    return null
+  }
+
+  return token
 }
 
 export function getUser() {
   const user = localStorage.getItem('user')
 
   if (!user || user === 'undefined' || user === 'null') {
+    localStorage.removeItem('user')
+    localStorage.removeItem('token')
     return null
   }
 
