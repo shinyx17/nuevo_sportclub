@@ -67,36 +67,40 @@ export async function loginUser(credentials) {
       body: JSON.stringify({ email, password }),
     })
 
-    const data = await response.json()
+    const data = await response.json().catch(() => null)
 
     if (!response.ok) {
-      throw new Error(data.message || 'Error al iniciar sesión')
+      throw new Error(data?.message || 'Error al iniciar sesión')
     }
 
     return data
   } catch (error) {
-    const storedUsers = JSON.parse(localStorage.getItem('offlineUsers') || '[]')
-    const offlineUser = storedUsers.find(
-      (user) => user.email.toLowerCase() === email && user.password === password,
-    )
+    if (isNetworkError(error)) {
+      const storedUsers = JSON.parse(localStorage.getItem('offlineUsers') || '[]')
+      const offlineUser = storedUsers.find(
+        (user) => user.email.toLowerCase() === email && user.password === password,
+      )
 
-    if (offlineUser) {
-      return {
-        ok: true,
-        message: 'Login exitoso (modo offline)',
-        data: {
-          token: `offline-token-${Date.now()}`,
-          user: {
-            id: offlineUser.id,
-            full_name: offlineUser.full_name,
-            email: offlineUser.email,
-            role: offlineUser.role,
+      if (offlineUser) {
+        return {
+          ok: true,
+          message: 'Login exitoso (modo offline)',
+          data: {
+            token: `offline-token-${Date.now()}`,
+            user: {
+              id: offlineUser.id,
+              full_name: offlineUser.full_name,
+              email: offlineUser.email,
+              role: offlineUser.role,
+            },
           },
-        },
+        }
       }
+
+      throw new Error(error.message || backendConnectionMessage())
     }
 
-    throw new Error(error.message || backendConnectionMessage())
+    throw new Error(error.message || 'Error al iniciar sesión')
   }
 }
 
