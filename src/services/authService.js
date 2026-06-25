@@ -165,7 +165,17 @@ export function getToken() {
 
 export function getUser() {
   const user = localStorage.getItem('user')
-  return user ? JSON.parse(user) : null
+
+  if (!user || user === 'undefined' || user === 'null') {
+    return null
+  }
+
+  try {
+    return JSON.parse(user)
+  } catch {
+    localStorage.removeItem('user')
+    return null
+  }
 }
 
 export function isAuthenticated() {
