@@ -41,6 +41,7 @@ Proyecto SPA SportClub desarrollado con React, React Router, Bootstrap y React-B
   VITE_API_URL=http://localhost:3000
   ```
 - No use el backend público, el proyecto está pensado para ejecutarse con el backend local.
+- Si despliegas solo el frontend en GitHub Pages, el backend debe estar desplegado en una URL pública distinta y esa URL debe ser la que se ponga en `VITE_API_URL` antes de compilar.
 
 ## Funcionalidades principales
 - Login funcional con backend y fallback offline.

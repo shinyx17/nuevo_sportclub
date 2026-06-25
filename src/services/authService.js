@@ -33,6 +33,18 @@ const DEMO_USERS = {
 
 const DEMO_PASSWORD = '123456'
 
+function isNetworkError(error) {
+  return (
+    error instanceof TypeError ||
+    error.message?.includes('Failed to fetch') ||
+    error.message?.includes('network')
+  )
+}
+
+function backendConnectionMessage() {
+  return 'No se pudo conectar al backend. Asegúrate de iniciar el backend local en http://localhost:3000 y configurar VITE_API_URL en .env.'
+}
+
 export async function loginUser(credentials) {
   const email = credentials.email?.trim().toLowerCase()
   const password = credentials.password?.trim()
@@ -84,10 +96,7 @@ export async function loginUser(credentials) {
       }
     }
 
-    throw new Error(
-      error.message ||
-        'No se pudo conectar con el backend. Usa las credenciales demo, registra un usuario o inicia el servidor.',
-    )
+    throw new Error(error.message || backendConnectionMessage())
   }
 }
 
