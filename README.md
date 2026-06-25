@@ -28,10 +28,19 @@ Proyecto SPA SportClub desarrollado con React, React Router, Bootstrap y React-B
 2. Abrir en el navegador en `http://localhost:5173`
 
 ## Ejecución del backend
-- El proyecto está configurado para usar el backend público:
-  - `https://backend-1-eevt.onrender.com`
-- La URL del backend se configura desde el archivo `.env` con `VITE_API_URL`.
-- Si desea ejecutar un backend local, actualice `VITE_API_URL` en `.env` o en `src/services/*` según corresponda.
+- El proyecto debe usar el backend local ubicado en la carpeta `Backend`.
+- Iniciar el backend local desde la carpeta `Backend`:
+  ```bash
+  cd Backend
+  npm install
+  npm run dev
+  ```
+- El backend local corre por defecto en `http://localhost:3000`.
+- Configure la URL del backend en el archivo `.env` de la aplicación frontend:
+  ```env
+  VITE_API_URL=http://localhost:3000
+  ```
+- No use el backend público, el proyecto está pensado para ejecutarse con el backend local.
 
 ## Funcionalidades principales
 - Login funcional con backend y fallback offline.
