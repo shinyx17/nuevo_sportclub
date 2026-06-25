@@ -30,7 +30,8 @@ Proyecto SPA SportClub desarrollado con React, React Router, Bootstrap y React-B
 ## Ejecución del backend
 - El proyecto está configurado para usar el backend público:
   - `https://backend-1-eevt.onrender.com`
-- Si desea ejecutar un backend local, actualizar las URLs en `src/services/authService.js` y `src/services/userService.js`.
+- La URL del backend se configura desde el archivo `.env` con `VITE_API_URL`.
+- Si desea ejecutar un backend local, actualice `VITE_API_URL` en `.env` o en `src/services/*` según corresponda.
 
 ## Funcionalidades principales
 - Login funcional con backend y fallback offline.
