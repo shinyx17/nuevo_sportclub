@@ -1,4 +1,5 @@
-const API_URL = 'https://backend-1-eevt.onrender.com/api/users'
+const BASE_URL = import.meta.env.VITE_API_URL || 'https://backend-1-eevt.onrender.com'
+const API_URL = `${BASE_URL}/api/users`
 const OFFLINE_USERS_KEY = 'offlineUsers'
 
 function getToken() {

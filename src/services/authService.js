@@ -1,4 +1,5 @@
-const API_URL = 'https://backend-1-eevt.onrender.com/api/auth'
+const BASE_URL = import.meta.env.VITE_API_URL || 'https://backend-1-eevt.onrender.com'
+const API_URL = `${BASE_URL}/api/auth`
 
 const DEMO_USERS = {
   'admin@demo.cl': {
