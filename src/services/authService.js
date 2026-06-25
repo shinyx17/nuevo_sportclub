@@ -183,6 +183,7 @@ export function getUser() {
     return JSON.parse(user)
   } catch {
     localStorage.removeItem('user')
+    localStorage.removeItem('token')
     return null
   }
 }
