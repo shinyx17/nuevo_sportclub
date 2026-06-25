@@ -12,6 +12,12 @@ function Register() {
   const [success, setSuccess] = useState('')
   const [loading, setLoading] = useState(false)
 
+  const validateEmail = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+  const validateFullName = (value) => {
+    const parts = value.trim().split(/\s+/)
+    return parts.length >= 2 && parts.every((part) => part.length >= 2)
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault()
     setError('')
@@ -22,8 +28,33 @@ function Register() {
       return
     }
 
+    if (!validateFullName(fullName)) {
+      setError('Ingresa nombre y apellido válidos.')
+      return
+    }
+
+    if (!validateEmail(email)) {
+      setError('Ingresa un correo válido.')
+      return
+    }
+
+    if (fullName.length > 80) {
+      setError('El nombre no puede tener más de 80 caracteres.')
+      return
+    }
+
+    if (email.length > 150) {
+      setError('El correo no puede tener más de 150 caracteres.')
+      return
+    }
+
     if (password.length < 6) {
       setError('La contraseña debe tener al menos 6 caracteres.')
+      return
+    }
+
+    if (password.length > 32) {
+      setError('La contraseña no puede tener más de 32 caracteres.')
       return
     }
 
@@ -64,6 +95,7 @@ function Register() {
                 type="text"
                 placeholder="Ingrese su nombre completo"
                 value={fullName}
+                maxLength={80}
                 onChange={(e) => setFullName(e.target.value)}
               />
             </Form.Group>
@@ -74,6 +106,7 @@ function Register() {
                 type="email"
                 placeholder="Ingrese su correo"
                 value={email}
+                maxLength={150}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </Form.Group>
@@ -84,12 +117,13 @@ function Register() {
                 type="password"
                 placeholder="Ingrese su contraseña"
                 value={password}
+                maxLength={32}
                 onChange={(e) => setPassword(e.target.value)}
               />
             </Form.Group>
 
             <p className="text-muted small">
-              Si el backend no está disponible, el registro se guardará en localStorage y funcionará como modo offline.
+              
             </p>
 
             <Button type="submit" variant="primary" className="w-100" disabled={loading}>

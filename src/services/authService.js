@@ -106,39 +106,56 @@ export async function registerUser(registrationData) {
       body: JSON.stringify(registrationData),
     })
 
-    const data = await response.json()
+    const data = await response.json().catch(() => null)
 
     if (!response.ok) {
-      throw new Error(data.message || 'Error al registrar usuario')
+      const message =
+        data?.message ||
+        data?.error ||
+        (Array.isArray(data?.errors)
+          ? data.errors.map((err) => err.msg || err.message || err).join(', ')
+          : null) ||
+        `Error al registrar usuario (${response.status})`
+
+      throw new Error(message)
     }
 
     return data
   } catch (error) {
-    const storedUsers = JSON.parse(localStorage.getItem('offlineUsers') || '[]')
-    const existingUser = storedUsers.find((user) => user.email === registrationData.email)
+    const isNetworkError =
+      error instanceof TypeError ||
+      error.message?.includes('Failed to fetch') ||
+      error.message?.includes('network')
 
-    if (existingUser) {
-      throw new Error('El correo ya está registrado')
+    if (isNetworkError) {
+      const storedUsers = JSON.parse(localStorage.getItem('offlineUsers') || '[]')
+      const existingUser = storedUsers.find((user) => user.email === registrationData.email)
+
+      if (existingUser) {
+        throw new Error('El correo ya está registrado')
+      }
+
+      const newUser = {
+        id: storedUsers.length + 100,
+        full_name: registrationData.full_name,
+        email: registrationData.email,
+        role: registrationData.role || 'user',
+        password: registrationData.password,
+      }
+
+      const token = `offline-token-${Date.now()}`
+      const offlineData = { token, user: { ...newUser, password: undefined } }
+
+      localStorage.setItem('offlineUsers', JSON.stringify([...storedUsers, newUser]))
+
+      return {
+        ok: true,
+        message: 'Registro exitoso (modo offline)',
+        data: offlineData,
+      }
     }
 
-    const newUser = {
-      id: storedUsers.length + 100,
-      full_name: registrationData.full_name,
-      email: registrationData.email,
-      role: registrationData.role || 'user',
-      password: registrationData.password,
-    }
-
-    const token = `offline-token-${Date.now()}`
-    const offlineData = { token, user: { ...newUser, password: undefined } }
-
-    localStorage.setItem('offlineUsers', JSON.stringify([...storedUsers, newUser]))
-
-    return {
-      ok: true,
-      message: 'Registro exitoso (modo offline)',
-      data: offlineData,
-    }
+    throw new Error(error.message || 'No se pudo conectar con el backend. Usa las credenciales demo, registra un usuario o inicia el servidor.')
   }
 }
 
