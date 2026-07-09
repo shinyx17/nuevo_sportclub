@@ -15,10 +15,12 @@ function AssignmentsPage() {
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
   const [selectedAssignment, setSelectedAssignment] = useState(null)
+  const [refreshing, setRefreshing] = useState(false)
 
   const loadAssignments = async () => {
     try {
       setLoading(true)
+      setRefreshing(true)
       const [assignmentResult, roomsResult, sportsResult, usersResult] = await Promise.all([
         getAssignments(),
         getRooms(),
@@ -34,6 +36,7 @@ function AssignmentsPage() {
       Swal.fire('Error', error.message, 'error')
     } finally {
       setLoading(false)
+      setRefreshing(false)
     }
   }
 
@@ -112,8 +115,8 @@ function AssignmentsPage() {
               <p className="text-secondary mb-0">Administra qué coach da qué deporte en qué sala.</p>
             </div>
             <div className="d-flex gap-2 flex-wrap">
-              <Button variant="outline-primary" onClick={loadAssignments}>
-                Refrescar
+              <Button variant="outline-primary" onClick={loadAssignments} disabled={refreshing}>
+                {refreshing ? 'Refrescando...' : 'Refrescar'}
               </Button>
               <Button variant="primary" onClick={openCreateModal}>
                 Nueva Asignación
@@ -155,12 +158,14 @@ function AssignmentsPage() {
                       </Badge>
                     </td>
                     <td>
-                      <Button variant="outline-secondary" size="sm" className="me-2" onClick={() => openEditModal(assignment)}>
-                        Editar
-                      </Button>
-                      <Button variant="outline-danger" size="sm" onClick={() => handleDelete(assignment)}>
-                        Eliminar
-                      </Button>
+                      <div className="d-flex gap-2 flex-wrap">
+                        <Button variant="outline-secondary" size="sm" onClick={() => openEditModal(assignment)}>
+                          Editar
+                        </Button>
+                        <Button variant="outline-danger" size="sm" onClick={() => handleDelete(assignment)}>
+                          Eliminar
+                        </Button>
+                      </div>
                     </td>
                   </tr>
                 ))}

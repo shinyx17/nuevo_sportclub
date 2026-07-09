@@ -15,16 +15,19 @@ function RoomsPage() {
   const [showModal, setShowModal] = useState(false)
   const [selectedRoom, setSelectedRoom] = useState(null)
   const [filterActive, setFilterActive] = useState('all')
+  const [refreshing, setRefreshing] = useState(false)
 
   const loadRooms = async () => {
     try {
       setLoading(true)
+      setRefreshing(true)
       const data = await getRooms()
       setRooms(data.data || [])
     } catch (error) {
       Swal.fire('Error', error.message, 'error')
     } finally {
       setLoading(false)
+      setRefreshing(false)
     }
   }
 
@@ -101,8 +104,8 @@ function RoomsPage() {
               <p className="text-secondary mb-0">Administra las salas disponibles para las clases.</p>
             </div>
             <div className="d-flex gap-2 flex-wrap">
-              <Button variant="outline-primary" onClick={loadRooms}>
-                Refrescar
+              <Button variant="outline-primary" onClick={loadRooms} disabled={refreshing}>
+                {refreshing ? 'Refrescando...' : 'Refrescar'}
               </Button>
               <Button variant="primary" onClick={openCreateModal}>
                 Nueva Sala

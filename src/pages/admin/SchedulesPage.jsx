@@ -22,10 +22,12 @@ function SchedulesPage() {
   const [showModal, setShowModal] = useState(false)
   const [selectedSchedule, setSelectedSchedule] = useState(null)
   const [filterDay, setFilterDay] = useState('all')
+  const [refreshing, setRefreshing] = useState(false)
 
   const loadSchedules = async () => {
     try {
       setLoading(true)
+      setRefreshing(true)
       const [scheduleResult, assignmentResult] = await Promise.all([getSchedules(), getAssignments()])
       setSchedules(scheduleResult.data || [])
       setAssignments(assignmentResult.data || [])
@@ -33,6 +35,7 @@ function SchedulesPage() {
       Swal.fire('Error', error.message, 'error')
     } finally {
       setLoading(false)
+      setRefreshing(false)
     }
   }
 
@@ -116,8 +119,8 @@ function SchedulesPage() {
               <p className="text-secondary mb-0">Administra los horarios vigentes para las clases de cada asignación.</p>
             </div>
             <div className="d-flex gap-2 flex-wrap">
-              <Button variant="outline-primary" onClick={loadSchedules}>
-                Refrescar
+              <Button variant="outline-primary" onClick={loadSchedules} disabled={refreshing}>
+                {refreshing ? 'Refrescando...' : 'Refrescar'}
               </Button>
               <Button variant="primary" onClick={openCreateModal}>
                 Nuevo Horario
@@ -169,12 +172,14 @@ function SchedulesPage() {
                       </Badge>
                     </td>
                     <td>
-                      <Button variant="outline-secondary" size="sm" className="me-2" onClick={() => openEditModal(schedule)}>
-                        Editar
-                      </Button>
-                      <Button variant="outline-danger" size="sm" onClick={() => handleDelete(schedule)}>
-                        Eliminar
-                      </Button>
+                      <div className="d-flex gap-2 flex-wrap">
+                        <Button variant="outline-secondary" size="sm" onClick={() => openEditModal(schedule)}>
+                          Editar
+                        </Button>
+                        <Button variant="outline-danger" size="sm" onClick={() => handleDelete(schedule)}>
+                          Eliminar
+                        </Button>
+                      </div>
                     </td>
                   </tr>
                 ))}

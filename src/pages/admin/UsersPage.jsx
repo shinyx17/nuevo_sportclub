@@ -9,16 +9,19 @@ function UsersPage() {
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
   const [selectedUser, setSelectedUser] = useState(null)
+  const [refreshing, setRefreshing] = useState(false)
 
   const loadUsers = async () => {
     try {
       setLoading(true)
+      setRefreshing(true)
       const data = await getUsers()
       setUsers(data.data || [])
     } catch (error) {
       Swal.fire('Error', error.message, 'error')
     } finally {
       setLoading(false)
+      setRefreshing(false)
     }
   }
 
@@ -82,11 +85,19 @@ function UsersPage() {
   return (
     <Card>
       <Card.Body>
-        <div className="d-flex justify-content-between align-items-center mb-3">
-          <h3 className="mb-0">Gestión de Usuarios</h3>
-          <Button variant="primary" onClick={openCreateModal}>
-            Nuevo Usuario
-          </Button>
+        <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3 gap-2">
+          <div>
+            <h3 className="mb-1">Gestión de Usuarios</h3>
+            <p className="text-secondary mb-0">Administra cuentas, roles y acceso al sistema.</p>
+          </div>
+          <div className="d-flex gap-2 flex-wrap">
+            <Button variant="outline-primary" onClick={loadUsers} disabled={refreshing}>
+              {refreshing ? 'Refrescando...' : 'Refrescar'}
+            </Button>
+            <Button variant="primary" onClick={openCreateModal}>
+              Nuevo Usuario
+            </Button>
+          </div>
         </div>
 
         {loading ? (
@@ -121,12 +132,14 @@ function UsersPage() {
                     </Badge>
                   </td>
                   <td>
-                    <Button variant="outline-primary" size="sm" className="me-2" onClick={() => openEditModal(user)}>
-                      Editar
-                    </Button>
-                    <Button variant="outline-danger" size="sm" onClick={() => handleDelete(user)}>
-                      Eliminar
-                    </Button>
+                    <div className="d-flex gap-2 flex-wrap">
+                      <Button variant="outline-primary" size="sm" onClick={() => openEditModal(user)}>
+                        Editar
+                      </Button>
+                      <Button variant="outline-danger" size="sm" onClick={() => handleDelete(user)}>
+                        Eliminar
+                      </Button>
+                    </div>
                   </td>
                 </tr>
               ))}
