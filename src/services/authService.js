@@ -2,6 +2,15 @@ const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
 const API_URL = `${BASE_URL}/api/auth`
 
 const DEMO_USERS = {
+  'admin@demo.cl': {
+    token: 'demo-admin1-token',
+    user: {
+      id: 1,
+      full_name: 'Demo Admin 1',
+      email: 'admin1@demo.cl',
+      role: 'admin',
+    },
+  },
   'admin1@demo.cl': {
     token: 'demo-admin1-token',
     user: {
@@ -11,6 +20,15 @@ const DEMO_USERS = {
       role: 'admin',
     },
   },
+  'coach@demo.cl': {
+    token: 'demo-coach1-token',
+    user: {
+      id: 2,
+      full_name: 'Demo Coach 1',
+      email: 'coach1@demo.cl',
+      role: 'coach',
+    },
+  },
   'coach1@demo.cl': {
     token: 'demo-coach1-token',
     user: {
@@ -18,6 +36,15 @@ const DEMO_USERS = {
       full_name: 'Demo Coach 1',
       email: 'coach1@demo.cl',
       role: 'coach',
+    },
+  },
+  'user@demo.cl': {
+    token: 'demo-user1-token',
+    user: {
+      id: 3,
+      full_name: 'Demo User 1',
+      email: 'user1@demo.cl',
+      role: 'user',
     },
   },
   'user1@demo.cl': {
@@ -31,7 +58,21 @@ const DEMO_USERS = {
   },
 }
 
-const DEMO_PASSWORD = '123456'
+const DEMO_PASSWORDS = ['12345678', '123456']
+
+function normalizeDemoCredentials(credentials) {
+  const email = credentials.email?.trim().toLowerCase()
+  const password = credentials.password?.trim()
+
+  if (email === 'admin@demo.cl' || email === 'coach@demo.cl' || email === 'user@demo.cl') {
+    return {
+      email: email.replace('@demo.cl', '1@demo.cl'),
+      password: password === '123456' ? '12345678' : password,
+    }
+  }
+
+  return { email, password }
+}
 
 function isNetworkError(error) {
   return (
@@ -46,17 +87,9 @@ function backendConnectionMessage() {
 }
 
 export async function loginUser(credentials) {
-  const email = credentials.email?.trim().toLowerCase()
-  const password = credentials.password?.trim()
-
-  const demoUser = DEMO_USERS[email]
-  if (demoUser && password === DEMO_PASSWORD) {
-    return {
-      ok: true,
-      message: 'Login exitoso (modo demo)',
-      data: demoUser,
-    }
-  }
+  const normalized = normalizeDemoCredentials(credentials)
+  const email = normalized.email
+  const password = normalized.password
 
   try {
     const response = await fetch(`${API_URL}/login`, {
@@ -76,6 +109,15 @@ export async function loginUser(credentials) {
     return data
   } catch (error) {
     if (isNetworkError(error)) {
+      const demoUser = DEMO_USERS[email]
+      if (demoUser && DEMO_PASSWORDS.includes(password)) {
+        return {
+          ok: true,
+          message: 'Login exitoso (modo demo)',
+          data: demoUser,
+        }
+      }
+
       const storedUsers = JSON.parse(localStorage.getItem('offlineUsers') || '[]')
       const offlineUser = storedUsers.find(
         (user) => user.email.toLowerCase() === email && user.password === password,
@@ -109,6 +151,43 @@ export function saveSession(token, user) {
   localStorage.setItem('user', JSON.stringify(user))
 }
 
+function formatErrorMessage(data, defaultMessage) {
+  if (!data) return defaultMessage
+
+  if (data.message) {
+    const details = data.errors
+    if (Array.isArray(details)) {
+      const joined = details.map((err) => err.msg || err.message || err).join(' ')
+      return `${data.message} ${joined}`.trim()
+    }
+
+    if (typeof details === 'object' && details !== null) {
+      const joined = Object.values(details)
+        .flat()
+        .map((err) => (typeof err === 'string' ? err : err.message || ''))
+        .filter(Boolean)
+        .join(' ')
+      return `${data.message} ${joined}`.trim()
+    }
+
+    return data.message
+  }
+
+  if (Array.isArray(data.errors)) {
+    return data.errors.map((err) => err.msg || err.message || err).join(' ')
+  }
+
+  if (typeof data.errors === 'object' && data.errors !== null) {
+    return Object.values(data.errors)
+      .flat()
+      .map((err) => (typeof err === 'string' ? err : err.message || ''))
+      .filter(Boolean)
+      .join(' ')
+  }
+
+  return data.error || defaultMessage
+}
+
 export async function registerUser(registrationData) {
   try {
     const response = await fetch(`${API_URL}/register`, {
@@ -122,15 +201,12 @@ export async function registerUser(registrationData) {
     const data = await response.json().catch(() => null)
 
     if (!response.ok) {
-      const message =
-        data?.message ||
-        data?.error ||
-        (Array.isArray(data?.errors)
-          ? data.errors.map((err) => err.msg || err.message || err).join(', ')
-          : null) ||
-        `Error al registrar usuario (${response.status})`
-
-      throw new Error(message)
+      const message = formatErrorMessage(data, `Error al registrar usuario (${response.status})`)
+      const err = new Error(message)
+      if (data?.errors && typeof data.errors === 'object' && !Array.isArray(data.errors)) {
+        err.fieldErrors = data.errors
+      }
+      throw err
     }
 
     return data

@@ -19,6 +19,8 @@ function UserLayout() {
           <Nav className="me-auto">
             <Nav.Link as={Link} to="/">Inicio</Nav.Link>
             <Nav.Link as={Link} to="/user/dashboard">Dashboard</Nav.Link>
+            <Nav.Link as={Link} to="/user/classes">Clases</Nav.Link>
+            <Nav.Link as={Link} to="/user/reservations">Reservas</Nav.Link>
             <Nav.Link as={Link} to="/perfil">Mi Perfil</Nav.Link>
           </Nav>
           <span className="text-white me-3">{user?.full_name || 'Usuario'}</span>

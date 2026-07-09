@@ -21,6 +21,9 @@ function AdminLayout() {
             <Nav.Link as={Link} to="/admin/dashboard">Dashboard</Nav.Link>
             <Nav.Link as={Link} to="/admin/users">Usuarios</Nav.Link>
             <Nav.Link as={Link} to="/admin/sports">Deportes</Nav.Link>
+            <Nav.Link as={Link} to="/admin/rooms">Salas</Nav.Link>
+            <Nav.Link as={Link} to="/admin/assignments">Asignaciones</Nav.Link>
+            <Nav.Link as={Link} to="/admin/schedules">Horarios</Nav.Link>
             <Nav.Link as={Link} to="/perfil">Mi Perfil</Nav.Link>
           </Nav>
           <span className="text-white me-3">{user?.full_name || 'Admin'}</span>

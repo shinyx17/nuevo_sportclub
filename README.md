@@ -64,6 +64,6 @@ Proyecto SPA SportClub desarrollado con React, React Router, Bootstrap y React-B
 - `src/main.jsx`
 
 ## Usuarios DEMO
-- Administrador	admin@demo.cl	123456
-- Coach	coach@demo.cl	123456
-- Usuario	user@demo.cl	123456
+- Administrador	admin@demo.cl	12345678
+- Coach	coach@demo.cl	12345678
+- Usuario	user@demo.cl	12345678

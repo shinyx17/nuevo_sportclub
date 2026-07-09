@@ -12,7 +12,7 @@ function UserDashboard() {
             </Card.Header>
             <Card.Body>
               <Card.Text>Revisa tus reservas de clases y horarios disponibles.</Card.Text>
-              <Button style={{ backgroundColor: '#0d6efd', borderColor: '#0d6efd' }}>
+              <Button href="/user/reservations" style={{ backgroundColor: '#0d6efd', borderColor: '#0d6efd' }}>
                 Ver reservas
               </Button>
             </Card.Body>
@@ -25,7 +25,7 @@ function UserDashboard() {
             </Card.Header>
             <Card.Body>
               <Card.Text>Explora clases disponibles y encuentra tu próxima sesión.</Card.Text>
-              <Button variant="outline-dark">Ver clases</Button>
+              <Button href="/user/classes" variant="outline-dark">Ver clases</Button>
             </Card.Body>
           </Card>
         </Col>

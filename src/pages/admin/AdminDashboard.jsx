@@ -21,22 +21,39 @@ function AdminDashboard() {
         <Col>
           <Card style={{ borderColor: '#5c148d' }}>
             <Card.Header style={{ backgroundColor: '#5c148d', color: '#fff' }}>
-              Configuración
+              Salas
             </Card.Header>
             <Card.Body>
-              <Card.Text>Controla la configuración general del sistema y permisos.</Card.Text>
-              <Button variant="outline-dark">Ver configuración</Button>
+              <Card.Text>Gestiona las salas donde se imparten las clases.</Card.Text>
+              <Button href="/admin/rooms" style={{ backgroundColor: '#5c148d', borderColor: '#5c148d' }}>
+                Ver salas
+              </Button>
             </Card.Body>
           </Card>
         </Col>
         <Col>
           <Card style={{ borderColor: '#5c148d' }}>
             <Card.Header style={{ backgroundColor: '#5c148d', color: '#fff' }}>
-              Reportes
+              Asignaciones
             </Card.Header>
             <Card.Body>
-              <Card.Text>Visualiza actividad del sistema y usuarios recientes.</Card.Text>
-              <Button variant="outline-dark">Ver reportes</Button>
+              <Card.Text>Configura qué coach enseña qué deporte en qué sala.</Card.Text>
+              <Button href="/admin/assignments" style={{ backgroundColor: '#5c148d', borderColor: '#5c148d' }}>
+                Ver asignaciones
+              </Button>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col>
+          <Card style={{ borderColor: '#5c148d' }}>
+            <Card.Header style={{ backgroundColor: '#5c148d', color: '#fff' }}>
+              Horarios
+            </Card.Header>
+            <Card.Body>
+              <Card.Text>Administra los horarios de clases activos.</Card.Text>
+              <Button href="/admin/schedules" style={{ backgroundColor: '#5c148d', borderColor: '#5c148d' }}>
+                Ver horarios
+              </Button>
             </Card.Body>
           </Card>
         </Col>
