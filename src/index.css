@@ -1,0 +1,141 @@
+:root {
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #111827;
+  background: #f4f6f8;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f8fbff 0%, #eef4f8 45%, #f4f6f8 100%);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.page-fade {
+  animation: fadeInUp 0.55s ease forwards;
+}
+
+.home-hero {
+  min-height: calc(100vh - 56px);
+}
+
+.hero-card {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(209, 213, 219, 0.4);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.hero-panel {
+  background: #ffffff;
+  border: 1px solid rgba(209, 213, 219, 0.45);
+}
+.btn,
+.profile-info-box,
+.hero-panel,
+.hero-card,
+.profile-card {
+  transition: transform 0.24s ease, box-shadow 0.24s ease, background-color 0.24s ease;
+}
+
+.btn:hover,
+.btn:focus {
+  transform: translateY(-1px);
+}
+
+.hero-card:hover,
+.hero-panel:hover,
+.profile-info-box:hover,
+.profile-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
+}
+.badge.bg-primary-soft {
+  color: #0d6efd;
+  background-color: rgba(13, 110, 253, 0.1);
+}
+
+.text-purple {
+  color: #6f42c1 !important;
+}
+
+.profile-card {
+  border: none;
+}
+
+.profile-header {
+  background: linear-gradient(135deg, #0d6efd 0%, #6610f2 100%);
+}
+
+.profile-header-admin {
+  background: linear-gradient(135deg, #6f42c1 0%, #4f46e5 100%);
+}
+
+.profile-header-coach {
+  background: linear-gradient(135deg, #198754 0%, #20c997 100%);
+}
+
+.profile-header-user {
+  background: linear-gradient(135deg, #0d6efd 0%, #3b82f6 100%);
+}
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0d6efd, #6610f2);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  font-weight: 700;
+  box-shadow: 0 20px 40px rgba(13, 110, 253, 0.18);
+}
+
+.profile-avatar-admin {
+  background: linear-gradient(135deg, #6f42c1, #4f46e5);
+}
+
+.profile-avatar-coach {
+  background: linear-gradient(135deg, #198754, #20c997);
+}
+
+.profile-avatar-user {
+  background: linear-gradient(135deg, #0d6efd, #3b82f6);
+}
+
+.profile-info-box {
+  background: #f8f9fa;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

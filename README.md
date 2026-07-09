@@ -1,7 +1,7 @@
 ﻿# SportClub SPA
 
 ## Descripción
-Proyecto SPA SportClub desarrollado con React, React Router, Bootstrap y React-Bootstrap. Incluye autenticación, autorización por roles, dashboards diferenciados y un módulo administrativo CRUD de usuarios.
+SportClub SPA es una aplicación web desarrollada con React y Vite para la gestión de clases deportivas, reservas, usuarios y módulos administrativos. Incluye autenticación por roles, dashboards diferenciados para administrador, coach y usuario, CRUD de usuarios, salas, asignaciones y horarios, además de reservas de clases.
 
 ## Integrante
 - Erik Lopez
@@ -14,9 +14,19 @@ Proyecto SPA SportClub desarrollado con React, React Router, Bootstrap y React-B
 - React-Bootstrap
 - SweetAlert2
 
+## Requisitos
+- Node.js 18 o superior
+- npm
+
 ## Instalación
-1. Instalar dependencias:
+1. Instalar dependencias del frontend:
    ```bash
+   npm install
+   ```
+
+2. Instalar dependencias del backend (si se ejecuta localmente):
+   ```bash
+   cd backend-sportclub
    npm install
    ```
 
@@ -25,23 +35,29 @@ Proyecto SPA SportClub desarrollado con React, React Router, Bootstrap y React-B
    ```bash
    npm run dev
    ```
-2. Abrir en el navegador en `http://localhost:5173`
+2. Abrir la app en `http://localhost:5173`
 
 ## Ejecución del backend
-- El proyecto está configurado para usar el backend público:
-  - `https://backend-1-eevt.onrender.com`
-- Si desea ejecutar un backend local, actualizar las URLs en `src/services/authService.js` y `src/services/userService.js`.
+1. Desde la carpeta `backend-sportclub`, iniciar el backend:
+   ```bash
+   cd backend-sportclub
+   npm run dev
+   ```
+2. El backend queda disponible en `http://localhost:3000` por defecto.
+3. Asegurar que el frontend tenga la siguiente variable en el archivo `.env`:
+   ```env
+   VITE_API_URL=http://localhost:3000
+   ```
 
 ## Funcionalidades principales
-- Login funcional con backend y fallback offline.
-- Registro funcional con backend y modo offline.
-- Validación básica de formularios.
-- Persistencia de sesión con `localStorage`.
-- Cierre de sesión funcional.
+- Login funcional con autenticación por rol.
+- Registro de usuarios.
 - Rutas protegidas y autorización por rol.
-- Dashboards diferenciados para usuario, coach y admin.
-- Módulo administrativo de usuarios con CRUD y modales React-Bootstrap.
-- Confirmaciones y mensajes con SweetAlert2.
+- Dashboards diferenciados para administrador, coach y usuario.
+- Gestión administrativa de usuarios, deportes, salas, asignaciones y horarios.
+- Visualización de clases disponibles para reserva.
+- Gestión de reservas activas y cancelación por el usuario.
+- Validaciones de formularios y mensajes de confirmación con SweetAlert2.
 
 ## Estructura del proyecto
 - `src/components`
@@ -51,8 +67,9 @@ Proyecto SPA SportClub desarrollado con React, React Router, Bootstrap y React-B
 - `src/services`
 - `src/App.jsx`
 - `src/main.jsx`
+- `backend-sportclub` (backend local)
 
 ## Usuarios DEMO
-- Administrador	admin@demo.cl	123456
-- Coach	coach@demo.cl	123456
-- Usuario	user@demo.cl	123456
+- Administrador: `admin@demo.cl` / `12345678`
+- Coach: `coach1@demo.cl` / `12345678`
+- Usuario: `user1@demo.cl` / `12345678`
